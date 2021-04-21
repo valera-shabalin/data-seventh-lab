@@ -26,6 +26,9 @@ namespace graph
 		/* Depth-first algorithm */
 		Graph& DFS();
 
+		/* Finding strongly connected components */
+		Graph& DFSComponents();
+
 		/* Getters */
 		size_t Size() const;
 

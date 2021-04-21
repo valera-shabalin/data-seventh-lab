@@ -28,7 +28,7 @@ int main()
 
     cout << "Список смежности: " << endl << graph << endl << graph.Size() << endl;
 
-    graph.DFS();
+    graph.DFSComponents();
 
     return 0;
 }

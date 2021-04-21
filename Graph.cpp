@@ -86,6 +86,27 @@ namespace graph
 		return;
 	}
 
+	/* Finding strongly connected components */
+	Graph& Graph::DFSComponents()
+	{
+		size_t k;
+		int tmp = 0;
+
+		/* T Graph */
+		std::vector < std::list<int> > data_r(this->data.size());
+
+		for (size_t i = 0, j = 1; i < this->data.size(); i++, j++)
+		{
+			for (const auto& item : this->data[i])
+			{
+				tmp = item;
+				data_r[tmp].push_back(i);
+			}
+		}
+
+		return *this;
+	}
+
 	/* Getters */
 	size_t Graph::Size() const
 	{
