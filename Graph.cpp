@@ -27,11 +27,6 @@ namespace graph
 			throw "There is not vertex.";
 		}
 
-		if (!this->ContainsEdge(from, to))
-		{
-			throw "Vertex is repeated.";
-		}
-
 		this->data[from].push_back(to);
 
 		return *this;
@@ -54,7 +49,7 @@ namespace graph
 	/* Depth-first algorithm */
 	Graph& Graph::DFS()
 	{
-		size_t* marks = new size_t[this->Size()]();
+		bool *marks = new bool[this->Size()]();
 
 		for (size_t i = 0; i < this->Size(); i++)
 		{
@@ -67,7 +62,7 @@ namespace graph
 		return *this;
 	}
 	
-	void Graph::DFSHellper(size_t v, size_t* marks) const
+	void Graph::DFSHellper(size_t v, bool* marks) const
 	{
 		size_t tmp = v;
 
@@ -89,13 +84,14 @@ namespace graph
 	/* Finding strongly connected components */
 	Graph& Graph::DFSComponents()
 	{
-		size_t k;
-		int tmp = 0;
+		/* Initialization vectors */
+		vector<bool>marks;
+		vector<size_t>component, order;
 
-		/* T Graph */
-		std::vector < std::list<int> > data_r(this->data.size());
-
-		for (size_t i = 0, j = 1; i < this->data.size(); i++, j++)
+		/* Create T Graph */
+		vector < list<int> > data_r(this->Size());
+		size_t tmp = 0;
+		for (size_t i = 0, j = 1; i < this->Size(); i++, j++)
 		{
 			for (const auto& item : this->data[i])
 			{
@@ -104,7 +100,70 @@ namespace graph
 			}
 		}
 
+		marks.assign(this->Size(), false);
+		for (size_t i = 0; i < this->Size(); i++)
+		{
+			if (!marks[i])
+			{
+				this->DFSComponentsHellperOne(i, marks, order);
+			}
+		}
+
+		marks.assign(this->Size(), false);
+		for (size_t i = 0, j = 1; i < this->Size(); ++i, j++) {
+			size_t v = order[this->Size() - 1 - i];
+			if (!marks[v]) 
+			{
+				this->DFSComponentsHellperTwo(v, marks, data_r, component);
+				cout << j << " --> ";
+				for (size_t j = 0; j < component.size(); j++)
+				{
+					cout << ++component[j] << " ";
+				}
+				cout << endl;
+				component.clear();
+			}
+		}
+
 		return *this;
+	}
+
+	void Graph::DFSComponentsHellperOne(size_t v, vector<bool> &marks, vector<size_t> &order) const
+	{
+		size_t tmp = 0;
+		marks[v] = true;
+
+		for (const auto& item : this->data[v])
+		{
+			if (!marks[item])
+			{
+				tmp = item;
+				this->DFSComponentsHellperOne(tmp, marks, order);
+			}
+		}
+
+		order.push_back(v);
+
+		return;
+	}
+
+	void Graph::DFSComponentsHellperTwo(size_t v, vector<bool>& marks, vector < list<int> > & data_r, vector<size_t> &component) const
+	{
+		size_t tmp = 0;
+		marks[v] = true;
+
+		component.push_back(v);
+
+		for (const auto& item : data_r[v])
+		{
+			if (!marks[item])
+			{
+				tmp = item;
+				this->DFSComponentsHellperTwo(tmp, marks, data_r, component);
+			}
+		}
+
+		return;
 	}
 
 	/* Getters */

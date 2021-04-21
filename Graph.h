@@ -12,7 +12,9 @@ namespace graph
 	private:
 		std::vector < std::list<int> > data;
 
-		void DFSHellper(size_t v, size_t* marks) const;
+		void DFSHellper(size_t v, bool* marks) const;
+		void DFSComponentsHellperOne(size_t v, std::vector<bool> &marks, std::vector<size_t> &order) const;
+		void DFSComponentsHellperTwo(size_t v, std::vector<bool>& marks, std::vector < std::list<int> >& data_r, std::vector<size_t>& component) const;
 	public:
 		/* Constructor & destructor */
 		Graph(size_t verticesCount = 0);

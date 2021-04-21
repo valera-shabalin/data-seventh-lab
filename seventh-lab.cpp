@@ -12,11 +12,10 @@ int main()
 
     ifstream file("input.txt");
 
-    int verticesCount = 0, edgesCount = 0;
-    int from = 0, to = 0;
+    size_t verticesCount = 0;
+    size_t from = 0, to = 0;
     
     file >> verticesCount;
-    file >> edgesCount;
 
     Graph graph(verticesCount);
 
@@ -26,7 +25,7 @@ int main()
         graph.AddEdge(from, to);
     }
 
-    cout << "Список смежности: " << endl << graph << endl << graph.Size() << endl;
+    cout << "Список смежности: " << endl << graph << endl;
 
     graph.DFSComponents();
 
