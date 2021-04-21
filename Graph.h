@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <iterator>
 
 namespace graph
 {
@@ -12,18 +11,23 @@ namespace graph
 	{
 	private:
 		std::vector < std::list<int> > data;
-	public:
-		/* Constructor */
-		Graph(size_t verticesCount = 0);
 
-		/* Destructor */
+		void DFSHellper(size_t v, size_t* marks) const;
+	public:
+		/* Constructor & destructor */
+		Graph(size_t verticesCount = 0);
 		~Graph();
 
-		/* Insert edge */
-		bool AddEdge(size_t from, size_t to);
+		bool ContainsVertex(size_t v) const;
+		bool ContainsEdge(size_t from, size_t to) const;
+
+		Graph& AddEdge(size_t from, size_t to);
+
+		/* Depth-first algorithm */
+		Graph& DFS();
 
 		/* Getters */
-		size_t GetVerticesCount() const;
+		size_t Size() const;
 
 		/* Friend functions */
 		friend std::ostream& operator << (std::ostream& os, Graph& graph);
